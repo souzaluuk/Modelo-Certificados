@@ -4,27 +4,49 @@
 """ A script to generate certificates for CACo - Centro Acadêmico da Computação
 da Unicamp """
 
+import argparse
 import csv
 import os
 import sys
 
-# Base of the certificate
-base_dir = 'base'
-pre_fn = 'preamble.tex'
-head_fn = 'header.tex'
-sig_fn = 'signature.tex'
+# Create argument parser
+parser = argparse.ArgumentParser(description='TODO')  # TODO
 
-# Course info (input dir will be course name by default)
-in_dir = 'Curso de Git'
-course = in_dir
-cont_fn = 'content.tex'
-list_fn = 'class.csv'
+parser.add_argument('--base-dir', default='base')
+parser.add_argument('--preamble', default='preamble.tex')
+parser.add_argument('--header', default='header.tex')
+parser.add_argument('--signature', default='signature.tex')
+
+parser.add_argument('course')
+parser.add_argument('--course-dir', default=None)
+parser.add_argument('--content', default='content.tex')
+parser.add_argument('--list', default='class.csv')
+
+parser.add_argument('--out-dir', default='certificates')
+
+parser.add_argument('-q', '--quiet', action='store_const', const=True,
+                    default=False)
+
+args = parser.parse_args()
+
+# Base of the certificate
+base_dir = args.base_dir
+pre_fn = args.preamble
+head_fn = args.header
+sig_fn = args.signature
+
+# Course info
+course = args.course
+if not args.course_dir:  # input dir defaults to course name
+    in_dir = course
+cont_fn = args.content
+list_fn = args.list
 
 # Where individual .tex will be saved (relative to input dir)
-out_dir = 'cert'
+out_dir = args.out_dir
 full_out_dir = os.path.join(in_dir, out_dir)
 
-verbose = True
+quiet = args.quiet
 
 # Check output directory
 if os.path.isdir(full_out_dir):
@@ -62,7 +84,7 @@ for d in data:
     name = d['name']
     cur_f = open(os.path.join(full_out_dir, name + '.tex'), 'w')
 
-    if verbose:
+    if not quiet:
         print('Building ' + name + '.tex')
 
     # Build certificate text
