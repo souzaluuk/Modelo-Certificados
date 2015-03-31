@@ -10,30 +10,39 @@ import os
 import sys
 
 # Create argument parser
-parser = argparse.ArgumentParser(description='TODO')  # TODO
+parser = argparse.ArgumentParser(description=__doc__)
 
-parser.add_argument('--base-dir', default='base')
-parser.add_argument('--preamble', default='preamble.tex')
-parser.add_argument('--header', default='header.tex')
-parser.add_argument('--signature', default='signature.tex')
+parser.add_argument('--base-dir', default='base',
+                    help='directory for base files')
+parser.add_argument('--pre', default='preamble.tex',
+                    help='preamble file (relative to BASE_DIR)')
+parser.add_argument('--head', default='header.tex',
+                    help='header file (relative to BASE_DIR)')
+parser.add_argument('--sig', default='signature.tex',
+                    help='signature file (relative to BASE_DIR)')
 
-parser.add_argument('course')
-parser.add_argument('--course-dir', default=None)
-parser.add_argument('--content', default='content.tex')
-parser.add_argument('--list', default='class.csv')
+parser.add_argument('course', help='Name of the course')
+parser.add_argument('--course-dir', default=None,
+                    help='directory where course data is stored (defaults to' +
+                    ' course)')
+parser.add_argument('--content', default='content.tex',
+                    help='content of certificate (relative to COURSE_DIR)')
+parser.add_argument('--list', default='class.csv',
+                    help='course participants file (relative to COURSE_DIR)')
 
-parser.add_argument('--out-dir', default='certificates')
+parser.add_argument('--out-dir', default='certificates',
+                    help='directory where the tex files will be saved')
 
 parser.add_argument('-q', '--quiet', action='store_const', const=True,
-                    default=False)
+                    default=False, help='quiet output')
 
 args = parser.parse_args()
 
 # Base of the certificate
 base_dir = args.base_dir
-pre_fn = args.preamble
-head_fn = args.header
-sig_fn = args.signature
+pre_fn = args.pre
+head_fn = args.head
+sig_fn = args.sig
 
 # Course info
 course = args.course
