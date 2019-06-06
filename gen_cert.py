@@ -98,7 +98,7 @@ for d in data:
     cur_text = cur_text + ('\\newcommand{\\course}{%s}' % course) + '\n'
     cur_text = cur_text + head + '\n'
     try:
-        cur_text = cur_text + (cont.replace('(NAMESTUDENT)', d['name'])) + '\n'
+        cur_text = cur_text + (cont % d) + '\n'
     except:
         print('error: missing information on ' + d, file=sys.stderr)
         exit(1)
