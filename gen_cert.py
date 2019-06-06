@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
-""" A script to generate certificates for CACo - Centro Acadêmico da Computação
-da Unicamp """
-
 import argparse
 import csv
 import os
@@ -90,7 +87,7 @@ cont = cont_f.read()
 
 # Generate individual tex files
 for d in data:
-    name = d['name']
+    name = d['name'].replace(' ','_')
     cur_f = open(os.path.join(full_out_dir, name + '.tex'), 'w')
 
     if not quiet:
@@ -101,7 +98,7 @@ for d in data:
     cur_text = cur_text + ('\\newcommand{\\course}{%s}' % course) + '\n'
     cur_text = cur_text + head + '\n'
     try:
-        cur_text = cur_text + (cont % d) + '\n'
+        cur_text = cur_text + (cont.replace('(NAMESTUDENT)', d['name'])) + '\n'
     except:
         print('error: missing information on ' + d, file=sys.stderr)
         exit(1)
